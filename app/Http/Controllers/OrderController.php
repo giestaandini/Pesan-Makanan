@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Order;
 use Illuminate\Http\Request;
-use App\Models\Promo;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
+use Illmuninate\Support\Facades\View;
 
-class PromoController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,13 +14,20 @@ class PromoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {       
-        $data = Promo::all();
-
-        return view('Promo.index', [
-            'items' => $data
-        ]);
+    {
+        $orders = order::with('product')->get();
+        return view('Order.index', compact('orders'));
     }
+
+    // function view_pdf() 
+    // {
+    //     $mpdf = new \Mpdf\Mpdf();
+    //     $orders = order::with('product')->get();
+    //     $html = view('order.cetak', compact('orders'))->render();
+    //     $mpdf->WriteHTML($html);
+    //     $mpdf->Output('nama_file.pdf', 'I');
+    //     return $mpdf;
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -29,7 +36,7 @@ class PromoController extends Controller
      */
     public function create()
     {
-        return view('Promo.create');
+        //
     }
 
     /**
@@ -40,14 +47,7 @@ class PromoController extends Controller
      */
     public function store(Request $request)
     {
-            $data = $request->all();
-            $data['image'] = $request->file('image')->store('promo', 'public');
-            Promo::create($data);
-            return redirect()->to('admin/promo')->with('success','Berhasil Menambahkan Kategori');
-    
-            // return redirect()->back();
-
-
+        //
     }
 
     /**
@@ -58,7 +58,7 @@ class PromoController extends Controller
      */
     public function show($id)
     {
-        //
+        return 'asem';
     }
 
     /**
@@ -69,8 +69,8 @@ class PromoController extends Controller
      */
     public function edit($id)
     {
-        $data = promo::where('id', $id)->first();
-        return view('promo.edit')->with('data', $data);
+        $data = order::where('meja', $id)->first();
+        return view('Order.edit')->with('data', $data);
     }
 
     /**
@@ -82,17 +82,17 @@ class PromoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'image'=>'required',
-            'descrition'=>'description'
-        ]);
-        
-        $data = [
-            'image'=> $request->file('image')->store('promo', 'public'),
-            'description'=>$request->description,
+         Session::flash('status', $request->status);
+
+         $request->validate([
+             'status'=>'required',
+         ]);
+
+         $data = [
+            'status'=>$request->status,
         ];
-        Promo::where('id', $id)->update($data);
-        return redirect()->to('admin/promo')->with('success','Berhasil Melakukan Update Data.');
+        order::where('status', $id)->update($data);
+        return redirect()->to('admin/orderan')->with('success','Berhasil Melakukan Update Pesanan.');
     }
 
     /**
@@ -103,7 +103,7 @@ class PromoController extends Controller
      */
     public function destroy($id)
     {
-        promo::where('title', $id)->delete();
-        return redirect()->to('admin/promo')->with('success', 'Berhasil Menghapus Banner Promo!');
+        order::where('meja', $id)->delete();
+        return redirect()->to('admin/orderan')->with('success', 'Berhasil Menghapus Pesanan!');
     }
 }

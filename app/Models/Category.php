@@ -6,14 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
 
-class Kategori extends Model
+class Category extends Model
 {
     use HasFactory;
-    protected $fillable = ['idkategori','kategori'];
-    protected $table = 'kategori';
+    protected $fillable = ['name'];
+    protected $table = 'categories';
 
     public function products()
     {
-        return $this->hasMany(Product::class, 'category_id', 'idkategori');
+        return $this->hasMany(Product::class);
     }
+    
 }

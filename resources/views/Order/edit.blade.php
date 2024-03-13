@@ -12,6 +12,7 @@
     <link href="/css/dashboard.css" rel="stylesheet">
   </head>
   <body>
+   
     
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
   <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/admin/admin">Administrator</a>
@@ -75,70 +76,50 @@
         </ul>
       </div>
     </nav>
-
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      @if (Session::has('success'))
-          <div class="pt-3">
-            <div class="alert alert-success">
-              {{ Session::get('success') }}
-            </div>
-          </div>
-      @endif
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Data Pengguna</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group me-2">
-          </div>
+    <!-- awal card form -->
+    <div class="card mt-3">
+        <div class="card-header bg-secondary text-white">
+            Data Pengguna
         </div>
-      </div>
-      <div class="pb-3">
-        <form class="d-flex" action="{{ url('admin/pengguna')}}" method="GET">
-          <input class="form-control me-1" type="search" name="pencarian" value="{{ Request::get('pencarian') }}"
-          placeholder="Kolom Pencarian" aria-label="Search">
-          <button class="btn btn-secondary" type="submit">Search</button>
-        </form>
-      </div>
-      <a href="/admin/pengguna/create" class="btn btn-primary"><span data-feather="plus"></span>
-        Tambah Data Pengguna </a>
-        <br><br>
-      <table class="table table-bordered table-striped">
-        <tr>
-            <th>No</th>
-            <th>Nama Pengguna</th>
-            <th>Email</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-        @foreach ($data as $item)
-        <tr>
-          <td>{{ $loop->iteration }}</td>
-          <td>{{ $item->name }}</td>
-          <td>{{ $item->email }}</td>
-          <td>{{ $item->role }}</td>
-          <td>
-            <a href="{{ url('admin/pengguna/'.$item->name.'/edit') }}" class="btn btn-warning"><span data-feather="edit"></span></a>
-              <form onsubmit="return confirm('Yakin Anda Ingin Menghapus Kategori Ini?')" class='d-inline' action="{{ url('admin/pengguna/'.$item->name) }}"
-              method="POST">
-              @csrf
-              @method('DELETE')
-              <button type="submit" name="submit" class="btn btn-danger"><span data-feather="delete"></span></button>
+
+        @if ($errors->any())
+            <div class="pt-3">
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $item)
+                            <li>{{ $item }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        @endif
+        <div class="card-body">
+            <form method="post" action="{{ url('admin/orderan/'.$data->status ) }}">
+                @csrf
+                @method('PUT')
+                <div class="form-group">
+                  <label>Status</label>
+                  <select class="form-control" name="status">
+                    <option value="{{ $data->status }}">{{ $data->status }}</option>
+                    <option>tersedia</option>
+                    <option>diproses</option>
+                    <option>diterima</option>
+                    <option>selesai</option>
+                </select>
+              </div>
+              <br>
+
+                <button type="submit" class="btn btn-success"><span data-feather="edit"></span> Simpan</button>
+                <button type="reset" class="btn btn-danger"><span data-feather="delete"></span> Kosongkan</button>
+                <a class="btn btn-primary" href="/admin/orderan" role="button"><span data-feather="log-out"></span> Keluar</a>
             </form>
-        </td>
-      </tr>
-      @endforeach
-      </table>
-      {{ $data->withQueryString()->links() }}
-
-      <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
-        </table>
-      </div>
+        </div>
+    </div>
+    <!-- akhir card form -->
     </main>
-  </div>
-</div>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
-<script src="/js/dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+    <script src="/js/dashboard.js"></script>
   </body>
 </html>

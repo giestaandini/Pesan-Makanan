@@ -68,7 +68,7 @@ class PenggunaController extends Controller
         $data['password'] = bcrypt($data['password']);
 
         pengguna::create($data);
-        return redirect()->to('user/pengguna')->with('success','Berhasil Menambahkan Data.');
+        return redirect()->to('admin/pengguna')->with('success','Berhasil Menambahkan Data.');
     }
 
     /**
@@ -114,7 +114,7 @@ class PenggunaController extends Controller
             'role'=>$request->role,
         ];
         Pengguna::where('name', $id)->update($data);
-        return redirect()->to('user/pengguna')->with('success','Berhasil Melakukan Update Data.');
+        return redirect()->to('admin/pengguna')->with('success','Berhasil Melakukan Update Data.');
     }
 
     /**
@@ -126,6 +126,6 @@ class PenggunaController extends Controller
     public function destroy($id)
     {
         pengguna::where('name', $id)->delete();
-        return redirect()->to('user/pengguna')->with('success', 'Berhasil Menghapus Data');
+        return redirect()->to('admin/pengguna')->with('success', 'Berhasil Menghapus Data');
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kategori;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-class KategoriController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,13 +17,12 @@ class KategoriController extends Controller
     {
         $pencarian = $request->pencarian;
         $jumlahBaris = 4;
-        if(strlen($pencarian)){
-            $data = kategori::where('idkategori','like',"%$pencarian%")
-                    ->orWhere('kategori','like',"%$pencarian%")
-                    ->paginate($jumlahBaris);
-        } else {
-            $data = kategori::orderBy('idkategori', 'desc')->paginate($jumlahBaris);
-        }
+        $data = Category::when($pencarian, function($query) use ($pencarian) {
+                return $query->where('name','like',"%$pencarian%");
+            })
+            ->orderBy('id', 'desc')
+            ->paginate($jumlahBaris);
+
         return view('Kategori.index')->with('data', $data);
     }
 
@@ -45,21 +44,17 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
-        Session::flash('idkategori', $request->idkategori);
-        Session::flash('kategori', $request->kategori);
+        Session::flash('kategori', $request->name);
 
         $request->validate([
-            'idkategori'=>'required|numeric|unique:kategori,idkategori',
-            'kategori'=>'required'
-        ],[
-            'idkategori.unique' => 'ID Kategori Sudah Ada Didalam Database.'
+            'name'=>'required'
         ]);
+
         $data = [
-            'idkategori'=>$request->idkategori,
-            'kategori'=>$request->kategori,
+            'name'=>$request->name,
         ];
-        Kategori::create($data);
-        return redirect()->to('user/kategori')->with('success','Berhasil Menambahkan Kategori');
+        Category::create($data);
+        return redirect()->to('admin/kategori')->with('success','Berhasil Menambahkan Kategori');
     }
 
     /**
@@ -81,7 +76,8 @@ class KategoriController extends Controller
      */
     public function edit($id)
     {
-        $data = kategori::where('idkategori', $id)->first();
+        // $data = kategori::where('id', $id)->first();
+        $data = Category::find($id);
         return view('kategori.edit')->with('data', $data);
     }
 
@@ -95,13 +91,13 @@ class KategoriController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'kategori'=>'required'
+            'name'=>'required'
         ]);
         $data = [
-            'kategori'=>$request->kategori,
+            'name'=>$request->name,
         ];
-        Kategori::where('idkategori', $id)->update($data);
-        return redirect()->to('user/kategori')->with('success','Berhasil Melakukan Update Kategori');
+        Category::find($id)->update($data);
+        return redirect()->to('admin/kategori')->with('success','Berhasil Melakukan Update Kategori');
     }
 
     /**
@@ -112,7 +108,7 @@ class KategoriController extends Controller
      */
     public function destroy($id)
     {
-        kategori::where('idkategori', $id)->delete();
-        return redirect()->to('user/kategori')->with('success', 'Berhasil Menghapus Kategori');
+        Category::find($id)->delete();
+        return redirect()->to('admin/kategori')->with('success', 'Berhasil Menghapus Kategori');
     }
 }

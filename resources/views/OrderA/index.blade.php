@@ -73,43 +73,34 @@
           </div>
       @endif
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Daftar Menu</h1>
+        <h1 class="h2">Pesan Makanan</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group me-2">
           </div>
         </div>
       </div>
-      <div class="pb-3">
-        <form class="d-flex" action="{{ url('user/menu')}}" method="GET">
-          <input class="form-control me-1" type="search" name="pencarian" value="{{ Request::get('pencarian') }}"
-          placeholder="Kolom Pencarian" aria-label="Search">
-          <button class="btn btn-secondary" type="submit">Search</button>
-        </form>
-      </div>
+      
       <table class="table table-bordered table-striped">
         <tr>
             <th>No</th>
-            <th>ID</th>
-            <th>Nama Produk</th>
+            <th>Nama Pesanan</th>
             <th>Harga</th>
             <th>Status</th>
-            <th>Kategori</th>
-            <th></th>
+            <th>No Meja</th>
+            <th>Jumlah</th>
         </tr>
-        @foreach ($products as $product)
-            
+        
+        @foreach($orders as $order)
         <tr>
           <td>{{ $loop->iteration }}</td>
-          <td>{{ $product->id }}</td>
-          <td>{{ $product->name }}</td>
-          <td>{{ $product->price }}</td>
-          <td>{{ $product->status }}</td>
-          <td>{{ $product->category->name }}</td>
-          <td>
-            <center><a href="{{ url('/user/order/create') }}" class="btn btn-success"><span data-feather="check-square"></span></a></center>
-          </td>
+          <td>{{ $order->product->name }}</td>
+          <td>{{ $order->product->price }}</td>
+          <td>{{ $order->status }}</td>
+          <td>{{ $order->meja }}</td>
+          <td>{{ $order->total }}</td>
       </tr>
-    @endforeach
+      @endforeach
+      
       </table>
 
       <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>

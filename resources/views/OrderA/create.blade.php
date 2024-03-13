@@ -15,7 +15,7 @@
    
     
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/user/user">Administrator</a>
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/admin/admin">Administrator</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -34,41 +34,29 @@
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link {{ Request::is('admin/admin') ? 'active' : ''}}" aria-current="page" href="/admin/admin">
+            <a class="nav-link {{ Request::is('admin/user') ? 'active' : ''}}" aria-current="page" href="/admin/user">
               <span data-feather="home"></span>
               Dashboard
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link {{ Request::is('admin/kategori') ? 'active' : ''}}" href="/admin/kategori">
-              <span data-feather="book-open"></span>
-              Kategori
-            </a>
-        </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('admin/menu') ? 'active' : ''}}" href="/admin/menu">
+          <a class="nav-link {{ Request::is('user/menu') ? 'active' : ''}}" href="/user/menu">
             <span data-feather="shopping-cart"></span>
             Makanan & Minuman
           </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link {{ Request::is('user/orderan') ? 'active' : ''}}" href="/user/orderan">
+                <span data-feather="phone"></span>
+                Order
+            </a>
+        </li>
           <li class="nav-item">
-              <a class="nav-link {{ Request::is('admin/promo') ? 'active' : ''}}" href="/admin/promo">
+              <a class="nav-link {{ Request::is('user/promo') ? 'active' : ''}}" href="/user/promo">
                   <span data-feather="gift"></span>
                   Banner Promo
                 </a>
           </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Request::is('admin/orderan') ? 'active' : ''}}" href="/admin/orderan">
-                    <span data-feather="phone"></span>
-                    Orderan
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Request::is('admin/pengguna') ? 'active' : ''}}" href="/admin/pengguna">
-                    <span data-feather="user"></span>
-                    Pengguna
-                </a>
-            </li>
         </ul>
 
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -80,7 +68,7 @@
     <!-- awal card form -->
     <div class="card mt-3">
         <div class="card-header bg-secondary text-white">
-            Kategori Makanan
+            Pesan Makanan
         </div>
 
         @if ($errors->any())
@@ -95,18 +83,36 @@
             </div>
         @endif
         <div class="card-body">
-            <form method="post" action="{{ url('admin/kategori/'.$data->id) }}">
+            <form method="post" action="{{ url('user/order') }}">
                 @csrf
-                @method('PUT')
                 <div class="form-group">
-                    <label>Kategori</label>
-                    <input type="text"class="form-control" name="name" value="{{ $data->name }}" required>
+                    <label>ID Product</label>
+                    <input type="text" class="form-control" name="product_id" value="{{ Session::get('product_id') }}" required>
+                  </div>
+                  <br>
+                <div class="form-group">
+                  <label>No Meja</label>
+                  <input type="text" name="meja" class="form-control" value="{{ Session::get('meja') }}" required">
+                </div>
+                <br>
+                <div class="form-group">
+                  <label>Status</label>
+                  <select class="form-control" name="status">
+                  <option value="{{ Session::get('status') }}">Tersedia</option>
+                    <option>tersedia</option>
+                    <option>diproses</option>
+                  </select>
+                </div>
+                <br>
+                <div class="form-group">
+                  <label>Jumlah Pesanan</label>
+                  <input type="text" class="form-control" name="total" value="{{ Session::get('total') }}" required">
                 </div>
                 <br>
 
                 <button type="submit" class="btn btn-success"><span data-feather="edit"></span> Simpan</button>
                 <button type="reset" class="btn btn-danger"><span data-feather="delete"></span> Kosongkan</button>
-                <a class="btn btn-primary" href="/admin/kategori" role="button"><span data-feather="log-out"></span> Keluar</a>
+                <a class="btn btn-primary" href="/user/menu" role="button"><span data-feather="log-out"></span> Keluar</a>
             </form>
         </div>
     </div>

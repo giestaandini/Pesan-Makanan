@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Order;
 
 use Illuminate\Http\Request;
-use App\Models\Promo;
-use Illuminate\Support\Facades\File;
 
-class PromoController extends Controller
+class CetakController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,12 +13,9 @@ class PromoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {       
-        $data = Promo::all();
-
-        return view('Promo.index', [
-            'items' => $data
-        ]);
+    {
+        $orders = order::with('product')->get();
+        return view('Order.cetak', compact('orders'));
     }
 
     /**
@@ -29,7 +25,7 @@ class PromoController extends Controller
      */
     public function create()
     {
-        return view('Promo.create');
+        //
     }
 
     /**
@@ -40,14 +36,7 @@ class PromoController extends Controller
      */
     public function store(Request $request)
     {
-            $data = $request->all();
-            $data['image'] = $request->file('image')->store('promo', 'public');
-            Promo::create($data);
-            return redirect()->to('admin/promo')->with('success','Berhasil Menambahkan Kategori');
-    
-            // return redirect()->back();
-
-
+        //
     }
 
     /**
@@ -69,8 +58,7 @@ class PromoController extends Controller
      */
     public function edit($id)
     {
-        $data = promo::where('id', $id)->first();
-        return view('promo.edit')->with('data', $data);
+        //
     }
 
     /**
@@ -82,17 +70,7 @@ class PromoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'image'=>'required',
-            'descrition'=>'description'
-        ]);
-        
-        $data = [
-            'image'=> $request->file('image')->store('promo', 'public'),
-            'description'=>$request->description,
-        ];
-        Promo::where('id', $id)->update($data);
-        return redirect()->to('admin/promo')->with('success','Berhasil Melakukan Update Data.');
+        //
     }
 
     /**
@@ -103,7 +81,6 @@ class PromoController extends Controller
      */
     public function destroy($id)
     {
-        promo::where('title', $id)->delete();
-        return redirect()->to('admin/promo')->with('success', 'Berhasil Menghapus Banner Promo!');
+        //
     }
 }

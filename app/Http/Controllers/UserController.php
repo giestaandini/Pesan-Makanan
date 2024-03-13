@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     function index() {
-        return view('admin');
+        return view('user');
     }
 
     // function user() {
@@ -17,10 +17,10 @@ class UserController extends Controller
     //     echo "<a href='/logout'> Logout >> </a>";
     // }
     function user() {
-        return view('admin');
+        return view('user');
     }
 
     function admin() {
-        return view('user');
+        return view('admin');
     }
 }

@@ -34,37 +34,37 @@
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link {{ Request::is('user/user') ? 'active' : ''}}" aria-current="page" href="/user/user">
+            <a class="nav-link {{ Request::is('admin/admin') ? 'active' : ''}}" aria-current="page" href="/admin/admin">
               <span data-feather="home"></span>
               Dashboard
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {{ Request::is('user/kategori') ? 'active' : ''}}" href="/user/kategori">
+            <a class="nav-link {{ Request::is('admin/kategori') ? 'active' : ''}}" href="/admin/kategori">
               <span data-feather="book-open"></span>
               Kategori
             </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('user/menu') ? 'active' : ''}}" href="/user/menu">
+          <a class="nav-link {{ Request::is('admin/menu') ? 'active' : ''}}" href="/admin/menu">
             <span data-feather="shopping-cart"></span>
             Makanan & Minuman
           </a>
         </li>
           <li class="nav-item">
-              <a class="nav-link {{ Request::is('user/promo') ? 'active' : ''}}" href="/user/promo">
+              <a class="nav-link {{ Request::is('admin/promo') ? 'active' : ''}}" href="/admin/promo">
                   <span data-feather="gift"></span>
                   Banner Promo
                 </a>
           </li>
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('user/orderan') ? 'active' : ''}}" href="/user/orderan">
-                    <span data-feather="phone-missed"></span>
+                <a class="nav-link {{ Request::is('admin/orderan') ? 'active' : ''}}" href="/admin/orderan">
+                    <span data-feather="phone"></span>
                     Orderan
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('user/pengguna') ? 'active' : ''}}" href="/user/pengguna">
+                <a class="nav-link {{ Request::is('admin/pengguna') ? 'active' : ''}}" href="/admin/pengguna">
                     <span data-feather="user"></span>
                     Pengguna
                 </a>
@@ -95,7 +95,7 @@
             </div>
         @endif
         <div class="card-body">
-            <form method="post" action="{{ url('user/promo') }}" enctype="multipart/form-data">
+            <form method="post" action="{{ url('admin/promo') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                   <label for="title">Banner Promo</label>
@@ -113,7 +113,7 @@
 
                 <button type="submit" class="btn btn-success"><span data-feather="edit"></span> Simpan</button>
                 <button type="reset" class="btn btn-danger"><span data-feather="delete"></span> Kosongkan</button>
-                <a class="btn btn-primary" href="/user/promo" role="button"><span data-feather="log-out"></span> Keluar</a>
+                <a class="btn btn-primary" href="/admin/promo" role="button"><span data-feather="log-out"></span> Keluar</a>
             </form>
         </div>
     </div>

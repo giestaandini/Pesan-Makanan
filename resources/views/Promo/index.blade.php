@@ -14,7 +14,7 @@
   <body>
     
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/user/user">Administrator</a>
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/admin/admin">Administrator</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -33,37 +33,37 @@
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link {{ Request::is('user/user') ? 'active' : ''}}" aria-current="page" href="/user/user">
+            <a class="nav-link {{ Request::is('admin/admin') ? 'active' : ''}}" aria-current="page" href="/admin/admin">
               <span data-feather="home"></span>
               Dashboard
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {{ Request::is('user/kategori') ? 'active' : ''}}" href="/user/kategori">
+            <a class="nav-link {{ Request::is('admin/kategori') ? 'active' : ''}}" href="/admin/kategori">
               <span data-feather="book-open"></span>
               Kategori
             </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('user/menu') ? 'active' : ''}}" href="/user/menu">
+          <a class="nav-link {{ Request::is('admin/menu') ? 'active' : ''}}" href="/admin/menu">
             <span data-feather="shopping-cart"></span>
             Makanan & Minuman
           </a>
         </li>
           <li class="nav-item">
-              <a class="nav-link {{ Request::is('user/promo') ? 'active' : ''}}" href="/user/promo">
+              <a class="nav-link {{ Request::is('admin/promo') ? 'active' : ''}}" href="/admin/promo">
                   <span data-feather="gift"></span>
                   Banner Promo
                 </a>
           </li>
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('user/orderan') ? 'active' : ''}}" href="/user/orderan">
-                    <span data-feather="phone-missed"></span>
+                <a class="nav-link {{ Request::is('admin/orderan') ? 'active' : ''}}" href="/admin/orderan">
+                    <span data-feather="phone"></span>
                     Orderan
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('user/pengguna') ? 'active' : ''}}" href="/user/pengguna">
+                <a class="nav-link {{ Request::is('admin/pengguna') ? 'active' : ''}}" href="/admin/pengguna">
                     <span data-feather="user"></span>
                     Pengguna
                 </a>
@@ -84,20 +84,20 @@
           </div>
         </div>
       </div>
-      <a href="/user/promo/create" class="btn btn-primary"><span data-feather="plus"></span>
+      <a href="/admin/promo/create" class="btn btn-primary"><span data-feather="plus"></span>
         Tambah Banner Promo </a>
         <br><br>
         <div class="row">
             @foreach ($items as $item)
                 <div class="col-md-4">
                     <div class="card border-0 mb-3">
-                        <img src="{{ asset('storage/' . $item->image) }}" alt="" class="card-img-top">
+                        <img src="{{ asset('storage/' . $item->image) }}" alt="image" class="card-img-top">
                         <div class="card-body">
                             <h5 class="card-title">{{ $item->title }}</h5>
                             <p class="mb-0 text-secondary">{{ $item->description}}</p>
                             <br>
-                            <a href="{{ url('user/promo/'.$item->title.'/edit') }}" class="btn btn-warning"><span data-feather="edit"></span></a>
-                            <form onsubmit="return confirm('Yakin Anda Ingin Menghapus Banner Promo Ini?')" class='d-inline' action="{{ url('user/promo/'.$item->title) }}"
+                            <a href="{{ url('admin/promo/'.$item->id.'/edit') }}" class="btn btn-warning"><span data-feather="edit"></span></a>
+                            <form onsubmit="return confirm('Yakin Anda Ingin Menghapus Banner Promo Ini?')" class='d-inline' action="{{ url('admin/promo/'.$item->id) }}"
                                 method="POST">
                                 @csrf
                                 @method('DELETE')

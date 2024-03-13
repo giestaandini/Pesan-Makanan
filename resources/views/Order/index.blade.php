@@ -33,29 +33,41 @@
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link {{ Request::is('admin/user') ? 'active' : ''}}" aria-current="page" href="/admin/user">
+            <a class="nav-link {{ Request::is('admin/admin') ? 'active' : ''}}" aria-current="page" href="/admin/admin">
               <span data-feather="home"></span>
               Dashboard
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link {{ Request::is('admin/kategori') ? 'active' : ''}}" href="/admin/kategori">
+              <span data-feather="book-open"></span>
+              Kategori
+            </a>
+        </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('user/menu') ? 'active' : ''}}" href="/user/menu">
+          <a class="nav-link {{ Request::is('admin/menu') ? 'active' : ''}}" href="/admin/menu">
             <span data-feather="shopping-cart"></span>
             Makanan & Minuman
           </a>
         </li>
           <li class="nav-item">
-            <li class="nav-item">
-                <a class="nav-link {{ Request::is('user/order') ? 'active' : ''}}" href="/user/order">
-                    <span data-feather="phone"></span>
-                    Order
-                  </a>
-              </li>
-              <a class="nav-link {{ Request::is('user/promo') ? 'active' : ''}}" href="/user/promo">
+              <a class="nav-link {{ Request::is('admin/promo') ? 'active' : ''}}" href="/admin/promo">
                   <span data-feather="gift"></span>
                   Banner Promo
                 </a>
           </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('admin/orderan') ? 'active' : ''}}" href="/admin/orderan">
+                    <span data-feather="phone"></span>
+                    Orderan
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('admin/pengguna') ? 'active' : ''}}" href="/admin/pengguna">
+                    <span data-feather="user"></span>
+                    Pengguna
+                </a>
+            </li>
         </ul>
 
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -73,44 +85,50 @@
           </div>
       @endif
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Daftar Menu</h1>
+        <h1 class="h2">Pesanan Makanan</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group me-2">
           </div>
         </div>
       </div>
-      <div class="pb-3">
-        <form class="d-flex" action="{{ url('user/menu')}}" method="GET">
-          <input class="form-control me-1" type="search" name="pencarian" value="{{ Request::get('pencarian') }}"
-          placeholder="Kolom Pencarian" aria-label="Search">
-          <button class="btn btn-secondary" type="submit">Search</button>
-        </form>
-      </div>
+      
       <table class="table table-bordered table-striped">
         <tr>
             <th>No</th>
-            <th>ID</th>
-            <th>Nama Produk</th>
+            <th>Nama Pesanan</th>
             <th>Harga</th>
             <th>Status</th>
-            <th>Kategori</th>
-            <th></th>
+            <th>No Meja</th>
+            <th>Jumlah</th>
+            <th>Action</th>
         </tr>
-        @foreach ($products as $product)
-            
+        
+        @foreach($orders as $order)
         <tr>
           <td>{{ $loop->iteration }}</td>
-          <td>{{ $product->id }}</td>
-          <td>{{ $product->name }}</td>
-          <td>{{ $product->price }}</td>
-          <td>{{ $product->status }}</td>
-          <td>{{ $product->category->name }}</td>
+          <td>{{ $order->product->name }}</td>
+          <td>{{ $order->product->price }}</td>
+          <td>{{ $order->status }}</td>
+          <td>{{ $order->meja }}</td>
+          <td>{{ $order->total }}</td>
           <td>
-            <center><a href="{{ url('/user/order/create') }}" class="btn btn-success"><span data-feather="check-square"></span></a></center>
+            <a href="{{ url('admin/orderan/'.$order->meja.'/edit') }}" class="btn btn-warning"><span data-feather="edit"></span></a>
+              <form onsubmit="return confirm('Yakin Anda Ingin Menghapus Orderan Ini?')" class='d-inline' action="{{ url('admin/orderan/'.$order->meja) }}"
+              method="POST">
+              @csrf
+              @method('DELETE')
+              <button type="submit" name="submit" class="btn btn-danger"><span data-feather="delete"></span></button>
+            </form>
           </td>
       </tr>
-    @endforeach
+      @endforeach
+      
       </table>
+      <p align="right">
+        <a href="/admin/cetak-order" class="btn btn-primary" target="_blank">
+          Export PDF
+        </a>
+    </p>
 
       <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
         </table>

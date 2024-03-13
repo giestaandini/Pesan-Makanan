@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Kategori;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -15,10 +15,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('kategori')->get();
-        $kategori = Kategori::with('products')->get();
-
-        return view('produk.index', compact('products','kategori'));
+        $products = Product::with('category')->get();
+        return view('produk.index', compact('products'));
 
     }
 
@@ -29,7 +27,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('Produk.create');
+        return view('produk.create');
     }
 
     /**
@@ -40,10 +38,29 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        Session::flash('prodname', $request->prodname);
-        Session::flash('harga', $request->harga);
-        Session::flash('status', $request->status);
-        Session::flash('kategori', $request->kategori);
+         Session::flash('category_id', $request->category_id);
+         Session::flash('picture', $request->picture);
+         Session::flash('name', $request->name);
+         Session::flash('price', $request->price);
+         Session::flash('status', $request->status);
+
+         $request->validate([
+             'category_id'=>'required',
+             'picture'=>'required',
+             'name'=>'required',
+             'price'=>'required',
+             'status'=>'required',
+         ]);
+
+         $data = [
+            'category_id'=>$request->category_id,
+            'picture'=> $request->file('picture')->store('promo', 'public'),
+            'name'=>$request->name,
+            'price'=>$request->price,
+            'status'=>$request->status,
+        ];
+             Product::create($data);
+             return redirect()->to('admin/menu')->with('success','Berhasil Menambahkan Produk');
     }
 
     /**
@@ -65,7 +82,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = product::where('name', $id)->first();
+        return view('produk.edit')->with('data', $data);
     }
 
     /**
@@ -77,7 +95,29 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+         Session::flash('category_id', $request->category_id);
+         Session::flash('picture', $request->picture);
+         Session::flash('name', $request->name);
+         Session::flash('price', $request->price);
+         Session::flash('status', $request->status);
+
+         $request->validate([
+             'category_id'=>'required',
+             'picture'=>'required',
+             'name'=>'required',
+             'price'=>'required',
+             'status'=>'required',
+         ]);
+
+         $data = [
+            'category_id'=>$request->category_id,
+            'picture'=>$request->file('picture')->store('promo', 'public'),
+            'name'=>$request->name,
+            'price'=>$request->price,
+            'status'=>$request->status,
+        ];
+        Product::where('name', $id)->update($data);
+        return redirect()->to('admin/menu')->with('success','Berhasil Melakukan Update Produk.');
     }
 
     /**
@@ -88,6 +128,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        product::where('name', $id)->delete();
+        return redirect()->to('admin/menu')->with('success', 'Berhasil Menghapus Produk!');
     }
 }
